@@ -4,7 +4,7 @@ import database from '../Database/Database';
 
 // TODO:
 // Does this need imported/ran before initializing passport?
-//import middleware from '../Middleware/Passport';
+import middleware from '../Middleware/Passport';
 
 import * as cors from 'cors';
 import * as parser from 'body-parser';
@@ -23,7 +23,7 @@ class App {
   }
 
   public config(): void {
-    this.app.use(passport.initialize());
+    middleware.load(passport, this.app);
     this.app.use(cors({ credentials: true, origin: true }));
     this.app.use(passport.initialize());
     this.app.use(parser.urlencoded({ extended: false }));

@@ -8,7 +8,6 @@ class Middleware {
   };
 
   public load(passport, app) {
-    console.log(this.opts);
     passport.use(
       new Strategy(this.opts, async (payload, done) => {
         let id = await UserModel.findById(payload.id);
