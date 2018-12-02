@@ -47,7 +47,7 @@ class UserController {
       await UserModel.comparePassword(user.password, storedUser['password'])
     ) {
       let token = await Auth.createToken(storedUser['id']);
-      req.headers['authorization'] = 'bearer ' + token;
+      res.cookie('jwt', token, {httpOnly: true});
       res.status(200).json({ success: true, token: token });
     } else {
       res.status(401).send({ message: 'Invalid username and/or password' });
@@ -56,13 +56,13 @@ class UserController {
 
   public async logout(req: express.Request, res: express.Response) {
     await res.removeHeader('Authorization');
-    res.status(200).send({status: 'Logged out'});
+    res.status(200).send({ status: 'Logged out' });
   }
 
   public async get(req: express.Request, res: express.Response) {
     let result = await UserModel.findById(req.user.id);
-    res.status(200).send({response: result});
-  };
+    res.status(200).send({ response: result });
+  }
 }
 
 export default new UserController();

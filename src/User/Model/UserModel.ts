@@ -50,7 +50,7 @@ class UserModel {
   }
 
   public async findById(id: number) {
-    let result = await this.user.findById(id);
+    let result = await this.user.findByPrimary(id);
     return result;
   }
 }
