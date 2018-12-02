@@ -55,7 +55,7 @@ class UserController {
   }
 
   public async logout(req: express.Request, res: express.Response) {
-    await res.removeHeader('Authorization');
+    await res.clearCookie('jwt');
     res.status(200).send({ status: 'Logged out' });
   }
 
