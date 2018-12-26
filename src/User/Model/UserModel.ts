@@ -38,21 +38,16 @@ class UserModel {
   });
 
   public async hash(password: string): Promise<string> {
-    // TODO:
-    // Move hash rounds to config
-    let hash = await bcrypt.hash(password, 10).then(hash => hash);
-    return hash;
+    return await bcrypt.hash(password, Number(process.env.HASH_ROUNDS));
   }
 
   public async comparePassword(password: string, hashedPassword: string) {
-    let result = await bcrypt.compare(password, hashedPassword);
-    return result;
+    return await bcrypt.compare(password, hashedPassword);
   }
 
   public async findById(id: number) {
-    let result = await this.user.findByPk(id);
-    return result;
+    return await this.user.findByPk(id);
   }
 }
 
-export default new UserModel();
+export default new UserModel;

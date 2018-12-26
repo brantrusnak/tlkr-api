@@ -65,7 +65,7 @@ class UserController {
   }
 }
 
-export default new UserController();
+export default new UserController;
 
 //TODO:
 // Implement these methods

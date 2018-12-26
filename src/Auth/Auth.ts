@@ -6,9 +6,6 @@ class Auth {
       expiresIn: `${process.env.SECRET_EXPIRES_IN_DAYS}d`
     });
   }
-  // Not sure if we need these?
-  public destroyToken() {}
-  public refreshToken() {}
 }
 
-export default new Auth();
+export default new Auth;

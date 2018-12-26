@@ -33,4 +33,4 @@ class Middleware {
   }
 }
 
-export default new Middleware();
+export default new Middleware;

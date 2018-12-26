@@ -1,9 +1,6 @@
 import * as express from 'express';
 import routes from './Routes';
 import database from '../Database/Database';
-
-// TODO:
-// Does this need imported/ran before initializing passport?
 import middleware from '../Middleware/Passport';
 
 import * as cors from 'cors';
@@ -11,15 +8,16 @@ import * as parser from 'body-parser';
 import * as passport from 'passport';
 
 class App {
-  public app: express.Application;
+  public app: express.Application = express();
 
   constructor() {
-    this.app = express();
+    this.init();
+  }
+
+  public init() {
     this.config();
     routes.load(this.app);
-    // TODO:
-    // Use variable from env here
-    database.init(true);
+    database.init();
   }
 
   public config(): void {

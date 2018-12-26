@@ -21,10 +21,35 @@ class Database {
     }
   );
 
-  public async init(refresh?: boolean) {
-    await this.seq.authenticate();
-    await this.seq.sync({force: refresh});
+  private shouldForce(): boolean {
+    return process.env.DB_FORCE_NEW_DB === "true" ? true : false;
+  }
+
+  private async testConnection(): Promise<boolean> {
+    try {
+      await this.seq.authenticate();
+      return true;
+    } catch(error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+  private async syncModels(): Promise<boolean> {
+    try {
+      let force = this.shouldForce();
+      await this.seq.sync({force: force});
+      return true;
+    } catch(error) {
+      return false;
+    }
+  }
+
+  public async init(): Promise<boolean> {
+    let authorized = await this.testConnection();
+    let synced = await this.syncModels();
+    return authorized && synced ? true : false;
   }
 }
 
-export default new Database();
+export default new Database;

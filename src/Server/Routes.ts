@@ -1,14 +1,18 @@
 import UserRoutes from '../User/Routes/UserRoutes';
+import * as express from 'express';
 
 class Routes {
-  public load(app) {
-    this.registerUserRoutes(app);
+  app: express.Application;
+
+  public load(app: express.Application) {
+    this.app = app;
+    this.registerUserRoutes();
   }
 
-  private registerUserRoutes(app) {
-    app.use('/', UserRoutes);
+  private registerUserRoutes() {
+    this.app.use('/', UserRoutes);
     console.log('Loaded User Routes');
   }
 }
 
-export default new Routes();
+export default new Routes;
