@@ -78,9 +78,10 @@ class UserController {
     req: Request,
     res: Response,
     operation: 'increment' | 'decrement',
-    field: 'postCount' | 'followersCount' | 'followingCount' | 'favoritesCount'
+    field: 'postCount' | 'followersCount' | 'followingCount' | 'favoritesCount',
+    userId?: number
   ) {
-    let currentInfo = await Model.user.findByPk(req.user.id);
+    let currentInfo = await Model.user.findByPk( userId || req.user.id);
     switch (operation) {
       case 'increment': {
         await Model.user.update(
@@ -88,7 +89,7 @@ class UserController {
             ...currentInfo['dataValues'],
             [field]: currentInfo['dataValues'][field] += 1
           },
-          { where: { id: req.user.id } }
+          { where: { id: userId || req.user.id } }
         );
         break;
       }
@@ -98,7 +99,7 @@ class UserController {
             ...currentInfo['dataValues'],
             [field]: currentInfo['dataValues'][field] -= 1
           },
-          { where: { id: req.user.id } }
+          { where: { id: userId || req.user.id } }
         );
         break;
       }

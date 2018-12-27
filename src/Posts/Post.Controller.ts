@@ -110,6 +110,27 @@ class PostController {
       throw error;
     }
   }
+
+  public async modifyCount(req: Request, res: Response, postId: number, operation: 'increment' | 'decrement') {
+    let currentPost = await Model.post.findOne({
+      where: { id: postId }
+    });
+
+    switch (operation) {
+      case 'increment': {
+        await Model.post.update({...currentPost['dataValues'], favoriteCount: currentPost['dataValues']['favoriteCount'] += 1}, {where: {id: postId}});
+        break;
+      }
+      case 'decrement': {
+        await Model.post.update({...currentPost['dataValues'], favoriteCount: currentPost['dataValues']['favoriteCount'] -= 1}, {where: {id: postId}});
+        break;
+      }
+      default: {
+        throw new Error('Invalid Switch/Case Operation');
+      }
+    }
+  }
+
 }
 
 export default new PostController();
