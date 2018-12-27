@@ -111,18 +111,35 @@ class PostController {
     }
   }
 
-  public async modifyCount(req: Request, res: Response, postId: number, operation: 'increment' | 'decrement') {
+  public async modifyCount(
+    req: Request,
+    res: Response,
+    postId: number,
+    operation: 'increment' | 'decrement'
+  ) {
     let currentPost = await Model.post.findOne({
       where: { id: postId }
     });
 
     switch (operation) {
       case 'increment': {
-        await Model.post.update({...currentPost['dataValues'], favoriteCount: currentPost['dataValues']['favoriteCount'] += 1}, {where: {id: postId}});
+        await Model.post.update(
+          {
+            ...currentPost['dataValues'],
+            favoriteCount: currentPost['dataValues']['favoriteCount'] += 1
+          },
+          { where: { id: postId } }
+        );
         break;
       }
       case 'decrement': {
-        await Model.post.update({...currentPost['dataValues'], favoriteCount: currentPost['dataValues']['favoriteCount'] -= 1}, {where: {id: postId}});
+        await Model.post.update(
+          {
+            ...currentPost['dataValues'],
+            favoriteCount: currentPost['dataValues']['favoriteCount'] -= 1
+          },
+          { where: { id: postId } }
+        );
         break;
       }
       default: {
@@ -130,7 +147,6 @@ class PostController {
       }
     }
   }
-
 }
 
 export default new PostController();

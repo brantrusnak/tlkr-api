@@ -81,7 +81,7 @@ class UserController {
     field: 'postCount' | 'followersCount' | 'followingCount' | 'favoritesCount',
     userId?: number
   ) {
-    let currentInfo = await Model.user.findByPk( userId || req.user.id);
+    let currentInfo = await Model.user.findByPk(userId || req.user.id);
     switch (operation) {
       case 'increment': {
         await Model.user.update(
