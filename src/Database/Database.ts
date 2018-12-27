@@ -22,14 +22,14 @@ class Database {
   );
 
   private shouldForce(): boolean {
-    return process.env.DB_FORCE_NEW_DB === "true" ? true : false;
+    return process.env.DB_FORCE_NEW_DB === 'true' ? true : false;
   }
 
   private async testConnection(): Promise<boolean> {
     try {
       await this.seq.authenticate();
       return true;
-    } catch(error) {
+    } catch (error) {
       console.error(error);
       return false;
     }
@@ -38,9 +38,9 @@ class Database {
   private async syncModels(): Promise<boolean> {
     try {
       let force = this.shouldForce();
-      await this.seq.sync({force: force});
+      await this.seq.sync({ force: force });
       return true;
-    } catch(error) {
+    } catch (error) {
       return false;
     }
   }
@@ -52,4 +52,4 @@ class Database {
   }
 }
 
-export default new Database;
+export default new Database();

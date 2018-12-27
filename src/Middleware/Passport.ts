@@ -1,4 +1,4 @@
-import UserModel from '../User/Model/UserModel';
+import UserController from '../User/User.Controller';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 import { Request } from 'express';
 
@@ -10,7 +10,7 @@ class Middleware {
 
   cookieExtractor(req: Request): string {
     let token;
-    if(req && req.get('cookie')) {
+    if (req && req.get('cookie')) {
       let cookie = req.get('cookie');
       token = cookie.split('=')[1];
     }
@@ -20,7 +20,7 @@ class Middleware {
   public load(passport, app) {
     passport.use(
       new Strategy(this.opts, async (payload, done) => {
-        let id = await UserModel.findById(payload.id);
+        let id = await UserController.findById(payload.id);
         if (id) {
           return done(null, id);
         } else {
@@ -33,4 +33,4 @@ class Middleware {
   }
 }
 
-export default new Middleware;
+export default new Middleware();

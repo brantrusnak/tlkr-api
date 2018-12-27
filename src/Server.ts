@@ -1,5 +1,5 @@
-import * as dotenv from "dotenv";
-import app from "./Server/App";
+import * as dotenv from 'dotenv';
+import app from './Server/App';
 
 let result = dotenv.config();
 if (result.error) {
