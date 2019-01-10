@@ -37,17 +37,17 @@ class UserController {
       });
       // status[1] is true if created, false if existing
       status[1]
-        ? res.status(200).send({ status: true, message: 'User created' })
+        ? res.status(200).send({ message: 'User created' })
         : res
             .status(400)
-            .send({ status: false, message: 'User already exists' });
+            .send({ message: 'User already exists' });
     } catch (error) {
       if (error instanceof ValidationError) {
-        res.status(400).send({ status: false, message: error.message });
+        res.status(400).send({ message: error.message });
       } else {
         res
           .status(500)
-          .send({ status: false, message: 'Something went wrong!' });
+          .send({ message: 'Something went wrong!' });
       }
       throw error;
     }

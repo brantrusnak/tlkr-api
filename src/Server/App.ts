@@ -22,7 +22,7 @@ class App {
 
   public config(): void {
     middleware.load(passport, this.app);
-    this.app.use(cors({ credentials: true, origin: true }));
+    this.app.use(cors({ origin: true, exposedHeaders: 'Authorization', credentials: true }));
     this.app.use(passport.initialize());
     this.app.use(parser.urlencoded({ extended: false }));
     this.app.use(parser.json());

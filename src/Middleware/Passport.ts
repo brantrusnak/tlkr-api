@@ -1,21 +1,11 @@
 import UserController from '../User/User.Controller';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
-import { Request } from 'express';
 
 class Middleware {
   opts: StrategyOptions = {
-    jwtFromRequest: this.cookieExtractor,
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('JWT'),
     secretOrKey: process.env.SECRET_KEY
   };
-
-  cookieExtractor(req: Request): string {
-    let token;
-    if (req && req.get('cookie')) {
-      let cookie = req.get('cookie');
-      token = cookie.split('=')[1];
-    }
-    return token;
-  }
 
   public load(passport, app) {
     passport.use(
