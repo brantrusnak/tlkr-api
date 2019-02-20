@@ -1,7 +1,7 @@
 import Model from './Favorite.Model';
 import { Request, Response } from 'express';
 import { ValidationError } from 'sequelize';
-import UserController from '../User/User.Controller';
+import UserDetailsController from '../UserDetails/UserDetails.Controller';
 import PostController from '../Posts/Post.Controller';
 
 class FavoriteController {
@@ -12,7 +12,7 @@ class FavoriteController {
     if (!favoriteCheck) {
       // Check if favorite doesn't already exist
       PostController.modifyCount(req, res, req.params.postId, 'increment');
-      UserController.modifyCount(req, res, 'increment', 'favoritesCount');
+      UserDetailsController.modifyCount(req, res, 'increment', 'favoritesCount');
       Model.favorite.create({ userId: req.user.id, postId: req.params.postId });
       res.status(200).send({ status: true, message: 'Favorited post' });
     } else {
@@ -27,7 +27,7 @@ class FavoriteController {
     if (favoriteCheck) {
       // Check if favorite exists
       PostController.modifyCount(req, res, req.params.postId, 'decrement');
-      UserController.modifyCount(req, res, 'decrement', 'favoritesCount');
+      UserDetailsController.modifyCount(req, res, 'decrement', 'favoritesCount');
       Model.favorite.destroy({
         where: { userId: req.user.id, postId: req.params.postId }
       });

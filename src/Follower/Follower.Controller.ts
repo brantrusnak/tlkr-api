@@ -1,6 +1,6 @@
 import Model from './Follower.Model';
 import { Request, Response } from 'express';
-import UserController from '../User/User.Controller';
+import UserDetailsController from '../UserDetails/UserDetails.Controller';
 
 class FavoriteController {
   public async follow(req: Request, res: Response) {
@@ -9,8 +9,8 @@ class FavoriteController {
     });
     if (!followCheck) {
       // Not following user
-      UserController.modifyCount(req, res, 'increment', 'followingCount');
-      UserController.modifyCount(
+      UserDetailsController.modifyCount(req, res, 'increment', 'followingCount');
+      UserDetailsController.modifyCount(
         req,
         res,
         'increment',
@@ -33,8 +33,8 @@ class FavoriteController {
     });
     if (followCheck) {
       // Following user
-      UserController.modifyCount(req, res, 'decrement', 'followingCount');
-      UserController.modifyCount(
+      UserDetailsController.modifyCount(req, res, 'decrement', 'followingCount');
+      UserDetailsController.modifyCount(
         req,
         res,
         'decrement',

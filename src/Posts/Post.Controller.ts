@@ -1,7 +1,7 @@
 import Model from './Post.Model';
 import { Request, Response } from 'express';
 import { ValidationError } from 'sequelize';
-import UserController from '../User/User.Controller';
+import UserDetailsController from '../UserDetails/UserDetails.Controller';
 
 class PostController {
   public async get(req: Request, res: Response) {
@@ -34,7 +34,7 @@ class PostController {
         isShowcase: false
       });
       res.status(200).send({ status: true, message: 'Created post' });
-      UserController.modifyCount(req, res, 'increment', 'postCount');
+      UserDetailsController.modifyCount(req, res, 'increment', 'postCount');
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(400).send({ status: false, message: error.message });
@@ -59,7 +59,7 @@ class PostController {
           .send({ status: false, message: 'Could not delete post' });
       } else {
         res.status(200).send({ status: true, message: 'Deleted post' });
-        UserController.modifyCount(req, res, 'decrement', 'postCount');
+        UserDetailsController.modifyCount(req, res, 'decrement', 'postCount');
       }
     } catch (error) {
       if (error instanceof ValidationError) {
