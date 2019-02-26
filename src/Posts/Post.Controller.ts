@@ -7,7 +7,6 @@ class PostController {
   public async get(req: Request, res: Response) {
     try {
       let post = await Model.post.findByPk(req.params.postId);
-      console.log(post);
       if (post) {
         res.status(200).send({ status: true, message: post['dataValues'] });
       } else {
@@ -27,14 +26,18 @@ class PostController {
 
   public async create(req: Request, res: Response) {
     try {
-      let create = await Model.post.create({
-        text: 'Hello!',
+      
+      await Model.post.create({
+        text: req.body.text,
         favoriteCount: 0,
         postedBy: req.user.id,
         isShowcase: false
       });
-      res.status(200).send({ status: true, message: 'Created post' });
+
       UserDetailsController.modifyCount(req, res, 'increment', 'postCount');
+
+      res.status(200).send({ status: true, message: 'Created post' });
+      
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(400).send({ status: false, message: error.message });
@@ -108,6 +111,19 @@ class PostController {
           .send({ status: false, message: 'Something went wrong!' });
       }
       throw error;
+    }
+  }
+
+  public async getAll(req: Request, res: Response) {
+    try {
+      let posts = await Model.post.all();
+      if (posts) {
+        res.status(200).send({posts});
+      } else {
+        res.status(400).send({ status: false, message: 'Could not find posts' });
+      }
+    } catch (error) {
+      
     }
   }
 

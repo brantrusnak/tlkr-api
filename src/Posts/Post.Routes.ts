@@ -25,4 +25,11 @@ router
     Controller.showcase.bind(Controller)
   );
 
+router
+  .route('/posts')
+  .get(
+    passport.authenticate('jwt', {session: false}),
+    Controller.getAll.bind(Controller)
+  );
+
 export default router;
