@@ -45,6 +45,20 @@ class UserDetailsController {
     }
   }
 
+  public async getById(req: Request, res: Response) {
+    try{
+      let user = await Model.userDetails.findByPk(req.params.userId);
+      if (user) {
+        res.status(200).send({response: user['dataValues']});
+      } else {
+        res.status(400).send({ status: false, message: 'Could not find user' });
+      }
+    } catch(error) {
+      res.status(400).send({ status: false, message: error.message });
+      throw error;
+    }
+  }
+
   public async modifyCount(
     req: Request,
     res: Response,

@@ -14,4 +14,11 @@ router
     Controller.update.bind(Controller)
   );
 
+  router
+  .route('/user/:userId')
+  .get(
+    passport.authenticate('jwt', { session: false }),
+    Controller.getById.bind(Controller)
+  )
+
 export default router;
