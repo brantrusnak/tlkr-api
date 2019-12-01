@@ -7,29 +7,29 @@ router
   .route('/post')
   .post(
     passport.authenticate('jwt', { session: false }),
-    Controller.create.bind(Controller)
+    Controller.createPost.bind(Controller)
   );
 
 router
   .route('/post/:postId')
   .get(
     passport.authenticate('jwt', { session: false }),
-    Controller.get.bind(Controller)
+    Controller.getPost.bind(Controller)
   )
   .delete(
     passport.authenticate('jwt', { session: false }),
-    Controller.delete.bind(Controller)
+    Controller.deletePost.bind(Controller)
   )
   .post(
     passport.authenticate('jwt', { session: false }),
-    Controller.showcase.bind(Controller)
+    Controller.showcasePost.bind(Controller)
   );
 
 router
-  .route('/posts')
+  .route('/posts/:userId')
   .get(
     passport.authenticate('jwt', {session: false}),
-    Controller.getAll.bind(Controller)
+    Controller.getAllByUser.bind(Controller)
   );
 
 export default router;

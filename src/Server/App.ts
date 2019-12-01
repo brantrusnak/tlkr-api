@@ -1,6 +1,6 @@
 import * as express from 'express';
 import routes from './Routes';
-import database from '../Database/Database';
+import { Database } from '../Database/Database';
 import middleware from '../Middleware/Passport';
 
 import * as cors from 'cors';
@@ -9,6 +9,7 @@ import * as passport from 'passport';
 
 class App {
   public app: express.Application = express();
+  private database = new Database();
 
   constructor() {
     this.init();
@@ -17,7 +18,7 @@ class App {
   public init() {
     this.config();
     routes.load(this.app);
-    database.init();
+    this.database.init();
   }
 
   public config(): void {

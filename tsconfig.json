@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
+    "module": "commonjs",
     "lib": ["es6"],
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "target": "es6",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   }
 }

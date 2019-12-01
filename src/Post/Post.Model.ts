@@ -1,9 +1,8 @@
 import { PrimaryKey, AutoIncrement, Column, ForeignKey, Table, CreatedAt, Model } from "sequelize-typescript";
 import { User } from "../User/User.Model";
-import { Post } from "../Post/Post.Model";
 
 @Table
-export class Favorite extends Model<Favorite> {
+export class Post extends Model<Post> {
 
   @PrimaryKey
   @AutoIncrement
@@ -12,11 +11,16 @@ export class Favorite extends Model<Favorite> {
 
   @ForeignKey(() => User)
   @Column
-  userId: number;
+  postedBy: number;
 
-  @ForeignKey(() => Post)
   @Column
-  postId: number;
+  text: string;
+
+  @Column
+  favoriteCount: number;
+
+  @Column
+  isShowcase: boolean;
 
   @CreatedAt
   creationDate: Date;

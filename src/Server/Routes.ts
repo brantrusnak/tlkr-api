@@ -1,9 +1,9 @@
 import * as express from 'express';
 import UserRoutes from '../User/User.Routes';
 import AuthRoutes from '../Auth/Auth.Routes';
-import PostRoutes from '../Posts/Post.Routes';
+import PostRoutes from '../Post/Post.Routes';
 import FavoriteRoutes from '../Favorite/Favorite.Routes';
-import FollowerRoutes from '../Follower/Follower.Routes';
+import FollowRoutes from '../Follow/Follow.Routes';
 import UserDetails from '../UserDetails/UserDetails.Routes';
 
 class Routes {
@@ -15,7 +15,7 @@ class Routes {
     this.registerUserRoutes();
     this.registerPostRoutes();
     this.registerFavoriteRoutes();
-    this.registerFollowerRoutes();
+    this.registerFollowRoutes();
     this.registerUserDetailsRoutes();
   }
 
@@ -39,8 +39,8 @@ class Routes {
     console.log('Loaded Favorite Routes');
   }
 
-  private registerFollowerRoutes() {
-    this.app.use('/', FollowerRoutes);
+  private registerFollowRoutes() {
+    this.app.use('/', FollowRoutes);
     console.log('Loaded Favorite Routes');
   }
 

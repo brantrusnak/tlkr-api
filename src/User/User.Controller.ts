@@ -1,8 +1,9 @@
-import Model from './User.Model';
-import UserDetailsController from '../UserDetails/UserDetails.Controller';
+import { User } from './User.Model';
+
 import { Request, Response } from 'express';
 import { hash, compare } from 'bcrypt';
 import { ValidationError } from 'sequelize';
+import UserDetailsController from '../UserDetails/UserDetails.Controller';
 
 class UserController {
   private async hash(password: string): Promise<string> {
@@ -14,44 +15,41 @@ class UserController {
   }
 
   public async findById(id: number) {
-    return await Model.user.findByPk(id);
+    return await User.findByPk(id);
   }
 
   public async create(req: Request, res: Response) {
-    console.log(req.body);
     try {
       let input = req.body;
       input.password = await this.hash(input.password);
 
-      let user = await Model.user
-        .findOrCreate({
-          where: { username: input.username, email: input.email },
-          defaults: {
-            username: input.username,
-            password: input.password,
-            email: input.email
-          }
-        })
-        .spread((user, created) => (created ? user : false));
+      let [user, created] = await User.findOrCreate({
+        where: {username: input.username},
+        defaults: {
+          username: input.username,
+          password: input.password
+        }
+      });
 
-      if (user) {
+      if (created) {
         let details = await UserDetailsController.create(
-          user['dataValues'],
-          input
+          user.id,
+          input.displayName,
+          input.description
         );
         if (details) {
-          res.status(200).send({ message: 'User created' });
+          res.status(200).send({message: 'User created'});
         } else {
-          res.status(500).send({ message: 'User already has details' });
+          res.status(500).send({message: 'User already has details'});
         }
       } else {
-        res.status(400).send({ message: 'User already exists' });
+        res.status(400).send({message: 'User already exists'});
       }
     } catch (error) {
       if (error instanceof ValidationError) {
-        res.status(400).send({ message: error.message });
+        res.status(400).send({message: error.message});
       } else {
-        res.status(500).send({ message: 'Something went wrong!' });
+        res.status(500).send({message: 'Something went wrong!'});
       }
       throw error;
     }

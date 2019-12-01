@@ -1,39 +1,34 @@
-import Model from './Favorite.Model';
 import { Request, Response } from 'express';
-import { ValidationError } from 'sequelize';
-import UserDetailsController from '../UserDetails/UserDetails.Controller';
-import PostController from '../Posts/Post.Controller';
+import { Favorite } from './Favorite.Model';
+import { Post } from '../Post/Post.Model';
 
 class FavoriteController {
   public async favorite(req: Request, res: Response) {
-    let favoriteCheck = await Model.favorite.findOne({
-      where: { userId: req.user.id, postId: req.params.postId }
+    let user = (req.user as {id: number});
+    let favoriteCheck = await Favorite.findOne({
+      where: { userId: user.id, postId: req.params.postId }
     });
     if (!favoriteCheck) {
-      // Check if favorite doesn't already exist
-      PostController.modifyCount(req, res, req.params.postId, 'increment');
-      UserDetailsController.modifyCount(req, res, 'increment', 'favoritesCount');
-      Model.favorite.create({ userId: req.user.id, postId: req.params.postId });
-      res.status(200).send({ status: true, message: 'Favorited post' });
+      Favorite.create({ userId: user.id, postId: req.params.postId });
+      Post.increment('favoriteCount', {by: 1, where: {id: req.params.postId}})
+      res.status(200).send({message: 'Favorited post'});
     } else {
-      res.status(400).send({ status: false, message: 'Already favorited' });
+      res.status(400).send({message: 'Already favorited'});
     }
   }
 
   public async unfavorite(req: Request, res: Response) {
-    let favoriteCheck = await Model.favorite.findOne({
-      where: { userId: req.user.id, postId: req.params.postId }
+    let user = (req.user as {id: number});
+    let favoriteCheck = await Favorite.findOne({
+      where: { userId: user.id, postId: req.params.postId }
     });
     if (favoriteCheck) {
       // Check if favorite exists
-      PostController.modifyCount(req, res, req.params.postId, 'decrement');
-      UserDetailsController.modifyCount(req, res, 'decrement', 'favoritesCount');
-      Model.favorite.destroy({
-        where: { userId: req.user.id, postId: req.params.postId }
-      });
-      res.status(200).send({ status: true, message: 'Unfavorited post' });
+      Favorite.destroy({where: { userId: user.id, postId: req.params.postId }});
+      Post.increment('favoriteCount', {by: -1, where: {id: req.params.postId}})
+      res.status(200).send({message: 'Unfavorited post'});
     } else {
-      res.status(400).send({ status: false, message: 'Post is not favored' });
+      res.status(400).send({message: 'Post is not favored'});
     }
   }
 }

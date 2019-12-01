@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import * as express from 'express';
-import UserModel from '../User/User.Model';
+import { User } from '../User/User.Model';
 import UserController from '../User/User.Controller';
 import { ValidationError } from 'sequelize';
 
@@ -14,7 +14,7 @@ class Auth {
   public async login(req: express.Request, res: express.Response) {
     try {
       let user = req.body;
-      let storedUser = await UserModel.user.findOne({
+      let storedUser = await User.findOne({
         where: { username: user.username }
       });
 
@@ -26,7 +26,7 @@ class Auth {
           storedUser['password']
         )
       ) {
-        res.setHeader('Authorization', 'JWT ' + this.createToken(storedUser['id']));
+        res.setHeader('Authorization', 'Bearer ' + this.createToken(storedUser['id']));
         res.status(200).send({ message: 'Signed in' });
       } else {
         res.status(401).send({ message: 'Invalid username and/or password' });

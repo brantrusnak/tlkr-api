@@ -5,20 +5,16 @@ import * as passport from 'passport';
 
 router
   .route('/user')
-  .get(
-    passport.authenticate('jwt', { session: false }),
-    Controller.get.bind(Controller)
-  )
   .put(
     passport.authenticate('jwt', { session: false }),
-    Controller.update.bind(Controller)
+    Controller.updateCurrentUser.bind(Controller)
   );
 
-  router
+router
   .route('/user/:userId')
   .get(
     passport.authenticate('jwt', { session: false }),
-    Controller.getById.bind(Controller)
+    Controller.getUserById.bind(Controller)
   )
 
 export default router;

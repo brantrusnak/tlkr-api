@@ -3,7 +3,7 @@ import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 
 class Middleware {
   opts: StrategyOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('JWT'),
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
     secretOrKey: process.env.SECRET_KEY
   };
 

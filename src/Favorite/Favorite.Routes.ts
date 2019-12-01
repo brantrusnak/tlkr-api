@@ -9,7 +9,8 @@ router
     passport.authenticate('jwt', { session: false }),
     Controller.favorite.bind(Controller)
   )
-  .delete(
+router.route('/unfavorite/:postId')
+  .post(
     passport.authenticate('jwt', { session: false }),
     Controller.unfavorite.bind(Controller)
   );
