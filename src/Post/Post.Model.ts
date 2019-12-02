@@ -1,5 +1,6 @@
-import { PrimaryKey, AutoIncrement, Column, ForeignKey, Table, CreatedAt, Model } from "sequelize-typescript";
+import { PrimaryKey, AutoIncrement, Column, ForeignKey, Table, CreatedAt, Model, BelongsTo } from "sequelize-typescript";
 import { User } from "../User/User.Model";
+import { UserDetails } from "../UserDetails/UserDetails.Model";
 
 @Table
 export class Post extends Model<Post> {
@@ -24,5 +25,8 @@ export class Post extends Model<Post> {
 
   @CreatedAt
   creationDate: Date;
+
+  @BelongsTo(() => UserDetails, 'postedBy')
+  userDetails: UserDetails;
 
 }

@@ -1,6 +1,7 @@
 import { Post } from './Post.Model';
 import { UserDetails } from '../UserDetails/UserDetails.Model';
 import { Request, Response } from 'express';
+import { Follow } from '../Follow/Follow.Model';
 
 class PostController {
 
@@ -23,7 +24,12 @@ class PostController {
 
   public async getPost(req: Request, res: Response) {
     try {
-      let post = await Post.findByPk(req.params.postId);
+      let post = await Post.findByPk(req.params.postId, {
+        include: [{
+          model: UserDetails,
+          as: "userDetails"
+        }]
+      })
       res.status(200).send(post);
     } catch (error) {
       res.status(400).send({message: error.message});
@@ -67,15 +73,65 @@ class PostController {
 
   public async getAllByUser(req: Request, res: Response) {
     try {
-      let posts = await Post.findAll({ where: {postedBy: req.params.userId}});
+      let posts = await Post.findAll({
+        where: {
+          postedBy: req.params.userId
+        },
+        order: [
+          // This should be a param we pass through so a user can sort by newest/oldest.
+          ['creationDate', 'DESC']
+        ],
+        include: [{
+          model: UserDetails,
+          as: "userDetails"
+        }]
+      });
       if (posts.length !== 0) {
         res.status(200).send({posts});
       } else {
         res.status(400).send({message: 'Could not find posts'});
       }
     } catch (error) {
-      
+      res.status(400).send({message: error.message});
+      throw error;
     }
+  }
+
+  public async getTimeline(req: Request, res: Response) {
+    try {
+      let user = (req.user as {id: number});
+      let followingUsers = await Follow.findAll({
+        where: {
+          userId: user.id
+        }
+      });
+      let followingIds = [user.id];
+      for(let followedUser of followingUsers) {
+        followingIds.push(followedUser.followingUserId)
+      }
+      // Need to do pagination/limit here...
+      let posts = await Post.findAll({
+        where: {
+          postedBy: followingIds,
+        },
+        order: [
+          ['creationDate', 'DESC']
+        ],
+        include: [{
+          model: UserDetails,
+          as: "userDetails",
+          where: {
+            userId: followingIds
+          }
+        }]
+      })
+  
+      res.status(200).send({posts});
+    } catch (error) {
+      res.status(400).send({message: error.message});
+      throw error;
+    }
+
   }
 
 }

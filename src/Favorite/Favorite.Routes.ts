@@ -4,6 +4,13 @@ const router = express.Router();
 import * as passport from 'passport';
 
 router
+  .route('/favorites')
+  .get(
+    passport.authenticate('jwt', {session: false}),
+    Controller.getFavorites.bind(Controller)
+  )
+
+router
   .route('/favorite/:postId')
   .post(
     passport.authenticate('jwt', { session: false }),

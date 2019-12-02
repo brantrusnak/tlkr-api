@@ -11,6 +11,13 @@ router
   );
 
 router
+    .route('/timeline')
+    .get(
+      passport.authenticate('jwt', { session: false }),
+      Controller.getTimeline.bind(Controller)
+    )
+
+router
   .route('/post/:postId')
   .get(
     passport.authenticate('jwt', { session: false }),

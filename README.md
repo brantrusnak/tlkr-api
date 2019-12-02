@@ -18,4 +18,4 @@
 
 ## Todo
 - [ ] Clean up / standardize all responses.
-- [ ] Implement a timeline (posts from following users ordered by date)
+- [X] Implement a timeline (posts from following users ordered by date)
