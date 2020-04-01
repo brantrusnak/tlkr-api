@@ -17,6 +17,7 @@ class Routes {
     this.registerFavoriteRoutes();
     this.registerFollowRoutes();
     this.registerUserDetailsRoutes();
+    console.log('Finished loading routes.');
   }
 
   private registerAuthRoutes() {

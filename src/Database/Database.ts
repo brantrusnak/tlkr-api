@@ -24,7 +24,8 @@ export class Database {
       idle: 10000
     },
     operatorsAliases: {
-    }
+    },
+    logging: process.env.MYSQL_LOGGING === 'true'
   });
 
   private shouldForce(): boolean {
@@ -44,7 +45,7 @@ export class Database {
   private async syncModels(): Promise<boolean> {
     try {
       let force = this.shouldForce();
-      await this.seq.sync({ force: force });
+      await this.seq.sync({ force });
       return true;
     } catch (error) {
       return false;
@@ -52,8 +53,10 @@ export class Database {
   }
 
   public async init(): Promise<boolean> {
+    console.log('Loading database');
     let authorized = await this.testConnection();
     let synced = await this.syncModels();
+    console.log('Finished loading database');
     return authorized && synced ? true : false;
   }
 }
