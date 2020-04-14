@@ -4,30 +4,39 @@ import { User } from '../User/User.Model';
 import UserController from '../User/User.Controller';
 import { ValidationError } from 'sequelize';
 
+interface DecodedToken {
+  id: number;
+  iat: number;
+  exp: number;
+}
+
 class Auth {
+
+  constructor() {}
+
   public createToken(id: number): string {
     return jwt.sign({ id: id }, process.env.SECRET_KEY, {
       expiresIn: `${process.env.SECRET_EXPIRES_IN_DAYS}d`
     });
   }
 
+  public decodeToken(jwtToken: string): DecodedToken {
+    return jwt.verify(jwtToken.split('Bearer ')[1], process.env.SECRET_KEY) as DecodedToken; // Is there a better way to remove 'Bearer '?
+  }
+
   public async login(req: express.Request, res: express.Response) {
     try {
       let user = req.body;
-      let storedUser = await User.findOne({
-        where: { username: user.username }
-      });
-
+      let storedUser = await User.findOne({ where: { username: user.username } });
       if (storedUser === null) {
-        res.status(404).send({ message: 'Username does not exist' });
+        res.status(404).send({ message: 'Invalid username and/or password' });
       } else if (
         await UserController.comparePassword(
           user.password,
           storedUser['password']
         )
       ) {
-        res.setHeader('Authorization', 'Bearer ' + this.createToken(storedUser['id']));
-        res.status(200).send({ message: 'Signed in' });
+        res.status(200).send({ message: 'Signed in', token: `Bearer ${this.createToken(storedUser['id'])}`});
       } else {
         res.status(401).send({ message: 'Invalid username and/or password' });
       }

@@ -11,6 +11,13 @@ router
   );
 
 router
+  .route('/user')
+  .get(
+    passport.authenticate('jwt', { session: false }),
+    Controller.getUser.bind(Controller)
+  )
+
+router
   .route('/user/:userId')
   .get(
     passport.authenticate('jwt', { session: false }),
