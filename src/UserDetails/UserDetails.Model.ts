@@ -1,4 +1,4 @@
-import {Table, Column, Model, CreatedAt, ForeignKey, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
+import {Table, Column, Model, CreatedAt, ForeignKey, PrimaryKey, AutoIncrement, BelongsTo } from 'sequelize-typescript';
 import { User } from '../User/User.Model';
 
 @Table
@@ -12,6 +12,9 @@ export class UserDetails extends Model<UserDetails> {
   @ForeignKey(() => User)
   @Column
   userId: number;
+
+  @Column
+  username: string;
 
   @Column
   displayName: string;

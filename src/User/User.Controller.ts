@@ -34,6 +34,7 @@ class UserController {
       if (created) {
         let details = await UserDetailsController.create(
           user.id,
+          input.username,
           input.displayName,
           input.description
         );

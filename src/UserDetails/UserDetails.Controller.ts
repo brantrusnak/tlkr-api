@@ -3,11 +3,12 @@ import { UserDetails } from './UserDetails.Model';
 import auth from '../Auth/Auth';
 
 class UserDetailsController {
-  public async create(userId: number, displayName: string, description: string): Promise<UserDetails> {
+  public async create(userId: number, username: string, displayName: string, description: string): Promise<UserDetails> {
     try {
       // This will get called from User.create()
       const userDetails = new UserDetails({
         userId,
+        username,
         displayName,
         description,
         postCount: 0,
