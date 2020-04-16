@@ -54,7 +54,6 @@ class FavoriteController {
           }
         }]
       })
-      console.log(post);
       posts.push(post);
     }
     res.status(200).send({ posts });
