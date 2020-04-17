@@ -54,6 +54,16 @@ class UserDetailsController {
     }
   }
 
+  public async getUserByUsername(req: Request, res: Response) {
+    try{
+      let user = await UserDetails.findOne({where: {username: req.params.username}});
+      res.status(200).send(user);
+    } catch(error) {
+      res.status(400).send({message: error.message});
+      throw error;
+    }
+  }
+
 }
 
 export default new UserDetailsController();

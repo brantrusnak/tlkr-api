@@ -17,11 +17,18 @@ router
     Controller.getUser.bind(Controller)
   )
 
-router
-  .route('/user/:userId')
+  router
+  .route('/user/id/:userId')
   .get(
     passport.authenticate('jwt', { session: false }),
     Controller.getUserById.bind(Controller)
+  )
+
+router
+  .route('/user/username/:username')
+  .get(
+    passport.authenticate('jwt', { session: false }),
+    Controller.getUserByUsername.bind(Controller)
   )
 
 export default router;

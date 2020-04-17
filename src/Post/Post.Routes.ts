@@ -32,11 +32,17 @@ router
     Controller.showcasePost.bind(Controller)
   );
 
-router
-  .route('/posts/:userId')
+  router
+  .route('/posts/id/:userId')
   .get(
     passport.authenticate('jwt', {session: false}),
-    Controller.getAllByUser.bind(Controller)
+    Controller.getAllFromUserById.bind(Controller)
+  );
+router
+  .route('/posts/username/:username')
+  .get(
+    passport.authenticate('jwt', {session: false}),
+    Controller.getAllFromUserByUsername.bind(Controller)
   );
 
 export default router;

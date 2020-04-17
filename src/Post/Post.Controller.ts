@@ -2,6 +2,7 @@ import { Post } from './Post.Model';
 import { UserDetails } from '../UserDetails/UserDetails.Model';
 import { Request, Response } from 'express';
 import { Follow } from '../Follow/Follow.Model';
+import { User } from '../User/User.Model';
 
 class PostController {
 
@@ -71,12 +72,38 @@ class PostController {
     }
   }
 
-  public async getAllByUser(req: Request, res: Response) {
+  public async getAllFromUserById(req: Request, res: Response) {
     try {
       let posts = await Post.findAll({
         where: {
           postedBy: req.params.userId
         },
+        order: [
+          // This should be a param we pass through so a user can sort by newest/oldest.
+          ['creationDate', 'DESC']
+        ],
+        include: [{
+          model: UserDetails,
+          as: "userDetails"
+        }]
+      });
+      if (posts.length !== 0) {
+        res.status(200).send({posts});
+      } else {
+        res.status(400).send({message: 'Could not find posts'});
+      }
+    } catch (error) {
+      res.status(400).send({message: error.message});
+      throw error;
+    }
+  }
+
+  public async getAllFromUserByUsername(req: Request, res: Response) {
+    try {
+
+      let user = await User.findOne({where: {username: req.params.username}})
+      let posts = await Post.findAll({
+        where: { postedBy: user.id },
         order: [
           // This should be a param we pass through so a user can sort by newest/oldest.
           ['creationDate', 'DESC']
