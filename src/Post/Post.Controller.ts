@@ -113,11 +113,7 @@ class PostController {
           as: "userDetails"
         }]
       });
-      if (posts.length !== 0) {
-        res.status(200).send({posts});
-      } else {
-        res.status(400).send({message: 'Could not find posts'});
-      }
+      res.status(200).send({posts});
     } catch (error) {
       res.status(400).send({message: error.message});
       throw error;

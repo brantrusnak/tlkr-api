@@ -6,7 +6,9 @@ import { Post } from '../Post/Post.Model';
 import { Follow } from '../Follow/Follow.Model';
 import { Favorite } from '../Favorite/Favorite.Model';
 
-dotenv.config();
+if(process.env.NODE_ENV !== 'production'){ 
+  dotenv.config();
+}
 
 export class Database {
   seq = new Sequelize({
