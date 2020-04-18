@@ -5,6 +5,7 @@ import { UserDetails } from '../UserDetails/UserDetails.Model';
 import { Post } from '../Post/Post.Model';
 import { Follow } from '../Follow/Follow.Model';
 import { Favorite } from '../Favorite/Favorite.Model';
+import { Dialect } from 'sequelize/types';
 
 if(process.env.NODE_ENV !== 'production'){ 
   dotenv.config();
@@ -12,12 +13,12 @@ if(process.env.NODE_ENV !== 'production'){
 
 export class Database {
   seq = new Sequelize({
-    database: process.env.MYSQL_DATABASE,
-    dialect: 'mysql',
-    username: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASS,
-    host: process.env.MYSQL_HOST,
-    port: parseInt(process.env.MYSQL_PORT),
+    database: process.env.DATABASE_NAME,
+    dialect: process.env.DATABASE_TYPE as Dialect,
+    username: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASS,
+    host: process.env.DATABASE_HOST,
+    port: parseInt(process.env.DATABASE_PORT),
     models: [User, UserDetails, Post, Follow, Favorite],
     pool: {
       max: 5,
@@ -27,11 +28,11 @@ export class Database {
     },
     operatorsAliases: {
     },
-    logging: process.env.MYSQL_LOGGING === 'true'
+    logging: process.env.DATABASE_LOGGING === 'true'
   });
 
   private shouldForce(): boolean {
-    return process.env.MYSQL_FORCE_NEW_DB === 'true' ? true : false;
+    return process.env.DATABASE_FORCE_NEW_DB === 'true' ? true : false;
   }
 
   private async testConnection(): Promise<boolean> {
