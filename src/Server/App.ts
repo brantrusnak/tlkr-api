@@ -18,7 +18,7 @@ class App {
   public init() {
     this.config();
     routes.load(this.app);
-    this.database.init().then(() => console.log(`Server ready. Listening on http://${process.env.NODE_HOST}:${process.env.NODE_PORT}`));
+    this.database.init().then(() => console.log(`Server ready. Listening on http://${process.env.HOST}:${process.env.PORT}`));
   }
 
   public config(): void {
