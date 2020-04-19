@@ -26,8 +26,6 @@ export class Database {
       acquire: parseInt(process.env.DATABASE_POOL_ACQUIRE),
       idle: parseInt(process.env.DATABASE_POOL_IDLE)
     },
-    operatorsAliases: {
-    },
     logging: process.env.DATABASE_LOGGING === 'true'
   });
 
