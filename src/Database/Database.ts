@@ -21,12 +21,10 @@ export class Database {
     port: parseInt(process.env.DATABASE_PORT),
     models: [User, UserDetails, Post, Follow, Favorite],
     pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    },
-    operatorsAliases: {
+      max: parseInt(process.env.DATABASE_POOL_MAX),
+      min: parseInt(process.env.DATABASE_POOL_MIN),
+      acquire: parseInt(process.env.DATABASE_POOL_ACQUIRE),
+      idle: parseInt(process.env.DATABASE_POOL_IDLE)
     },
     logging: process.env.DATABASE_LOGGING === 'true'
   });
@@ -47,8 +45,7 @@ export class Database {
 
   private async syncModels(): Promise<boolean> {
     try {
-      let force = this.shouldForce();
-      await this.seq.sync({ force });
+      await this.seq.sync({ force: this.shouldForce() });
       return true;
     } catch (error) {
       return false;
