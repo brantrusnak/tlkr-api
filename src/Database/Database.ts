@@ -21,10 +21,10 @@ export class Database {
     port: parseInt(process.env.DATABASE_PORT),
     models: [User, UserDetails, Post, Follow, Favorite],
     pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
+      max: parseInt(process.env.DATABASE_POOL_MAX),
+      min: parseInt(process.env.DATABASE_POOL_MIN),
+      acquire: parseInt(process.env.DATABASE_POOL_ACQUIRE),
+      idle: parseInt(process.env.DATABASE_POOL_IDLE)
     },
     operatorsAliases: {
     },

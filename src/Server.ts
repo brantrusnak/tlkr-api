@@ -7,4 +7,4 @@ if(process.env.NODE_ENV !== 'production'){
     throw result.error;
   }
 }
-app.listen(parseInt(process.env.NODE_PORT), process.env.NODE_HOST);
+app.listen(parseInt(process.env.PORT), process.env.HOST);
