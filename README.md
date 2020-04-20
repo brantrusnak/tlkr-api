@@ -13,8 +13,8 @@
 4. Update information in `.env`
 5. Create a database named `tlkr` (default).
 6. Run API
-    1. For development, run `npm run start`
-    2. For production, run `npm run build`
+    1. For development, run `npm run dev`
+    2. For production, run `npm run build` and then `npm run start`
 
 ## Todo
 - [ ] Clean up / standardize all responses.
